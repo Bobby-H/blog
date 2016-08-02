@@ -47,6 +47,12 @@ have to make the create action.
 >end
 done, right? far from it. how are we going to make a create action if our
 new method is already defined with Post.new?
+we're going to make it unique by giving it the parameters of post_params - which
+we will define below.
+*private* >> what does this mean? because our controller is a Post controller,
+and we're making a method called post_params <- that method will only ever
+apply to the PostsController. so we make it private to limit it's scope /
+accessibility to the PostsController.
 POST   = Create
 GET   = Read
 PATCH  = Update
