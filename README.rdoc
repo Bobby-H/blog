@@ -58,6 +58,20 @@ method, which allows for title & body to be passed into our database.
 our conditional statement is essentially saying "if the post saves, redirect_to
 where it saved; else render the new controller action." imagine the @post's
 pointing at each other.
+missing template error says it's looking for a posts/show page - so we make it!
+> touch app/views/posts/show.html.erb
+not an error; just a blank screen.
+we add the post params to our show page:
+>.<h1><%= @post.title %></h1>
+>.<div><%= @post.body %></div>
+and then we populate our index with however many posts are in DB with an each do
+loop.
+<% @posts.each do |p| %>
+  <h2><%= p.title %></h2>
+  <div><%= p.body %></div>
+  <br>
+  <%= link_to "Read Post", p%>
+<% end %>
 
 POST   = Create
 GET   = Read
