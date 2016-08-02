@@ -1,28 +1,21 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
+So - we wanna make a blog. with the intent to better understand MVC.
+For our blog we're going to be going through a Model, View, & Controller.
+But first we want the ability to Create, Read, Update, & Destroy posts.
+When we say this, were essentially saying we want to be able to store
+and manipulate data.
+~ In order to store and manipulate data we need a Model: a 'business class' whose
+job it is to handle business logic, talk to the database, validate data, etc.
+> rails g model Post title body:text << name is always singular
+~ Now that we have a model we'll need a way to be able to interact with it.
+This is when where we need a controller, and we'll also create a view for it
+aswell. The controller lives between your model and your view. it gets data from
+the model and then renders it through the view.
+>rails g controller Posts index << name is always plural
+~ What's really happening with index here? When rails generates a controller with
+an action, it creates for us a view file, a route, and will write the action
+inside of the controller for us.
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
