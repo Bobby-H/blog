@@ -1,28 +1,102 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+So - we wanna make a blog so we can better understand MVC.
+For our blog we're going to be going through a Model, View, & Controller.
+But first we want the ability to Create, Read, Update, & Destroy posts.
+When we say this, were essentially saying we want to be able to store
+and manipulate data.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+POST   = Create
+GET   = Read
+PATCH  = Update
+DELETE = Destroy
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+~ In order to store and manipulate data we need a Model: a 'business class' whose
+job it is to handle business logic, talk to the database, validate data, etc.
+> rails g model Post title body:text << name is always singular
+
+~ Now that we have a model we'll need a way to be able to interact with it.
+This is where we need a controller, and we'll also create a view for it
+aswell. The controller lives between your model and your view. it gets data from
+the model and then renders it through the view.
+>rails g controller Posts index << controller name is always plural
+
+~ What's really happening with index here? When rails generates a controller with
+an action, it creates for us a view file, a route, and will write the action
+inside of the controller for us. without even checking you can go to
+localhost:3000/posts/index.
+
+* Eye on the prize; we want our CRUD functionality *
+Create: let's grant us the ability to Create posts!
+>touch app/views/posts/new.html.erb
+
+Now when we visit the extension /posts/new we don't get an error; that's a start!
+But how will we get /new.html.erb to actually generate new posts?
+
+FORMS!
+
+We want to write a page that interacts with our Posts controller action and
+THEN save into our model! Here we see our first instance of Embedded RuBy, where
+we have ruby tags as well as html tags working to provide a dynamic view.
+
+form_for: is a rails helper for showing forms in the view and saving the data
+passed in INTO the database.
+
+@post: refers to our Post model (we still have to tweak our NEW action in order
+for it to work) allowing us to save to our model.
+
+f.label/f.text_field: (refer to migration folder) takes the data passed in and
+saves them to their assigned columns.
+
+What happens when we run it? Error!
+>>'First argument in form cannot contain nil or be empty'
+
+time to swing back by our controller action!
+> def new
+>   @post = Post.new
+> end
+
+@post is an instance variable; this enables us to utilize the Post.new operation
+within a view.
+
+problem: our erb is pulling from a defined instance variable, but we get an
+'unknown action' error. we made the index action, and the new action; now we
+have to make the create action.
+>def create
+>end
+
+done, right? far from it. how are we going to make a create action if our
+new method is already defined with Post.new?
+
+we're going to make it unique by giving it the parameters of post_params - which
+we will define below.
+
+*private* >> what does this mean? because our controller is a Post controller,
+and we're making a method called post_params <- that method will only ever
+apply to the PostsController. so we make it private to limit it's scope to the
+PostsController.
+
+rails 4 has what's referred to as strong params -> we see this with the 'permit'
+method, which allows for title & body to be passed into our database.
+
+our conditional statement is essentially saying "if the post saves, redirect_to
+where it saved; else render the new controller action." imagine the @post's
+pointing at each other.
+
+missing template error says it's looking for a posts/show page - so we make it!
+> touch app/views/posts/show.html.erb
+
+not an error; just a blank screen.
+we add the post params to our show page:
+>.<h1><%= @post.title %></h1>
+>.<div><%= @post.body %></div>
+
+and then we populate our index with however many posts are in DB with an each do
+loop.
+<% @posts.each do |p| %>
+  <h2><%= p.title %></h2>
+  <div><%= p.body %></div>
+  <br>
+  <%= link_to "Read Post", p%>
+<% end %>
