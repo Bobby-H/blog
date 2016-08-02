@@ -51,8 +51,14 @@ we're going to make it unique by giving it the parameters of post_params - which
 we will define below.
 *private* >> what does this mean? because our controller is a Post controller,
 and we're making a method called post_params <- that method will only ever
-apply to the PostsController. so we make it private to limit it's scope /
-accessibility to the PostsController.
+apply to the PostsController. so we make it private to limit it's scope to the
+PostsController.
+rails 4 has what's referred to as strong params -> we see this with the 'permit'
+method, which allows for title & body to be passed into our database.
+our conditional statement is essentially saying "if the post saves, redirect_to
+where it saved; else render the new controller action." imagine the @post's
+pointing at each other.
+
 POST   = Create
 GET   = Read
 PATCH  = Update
