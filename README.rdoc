@@ -15,7 +15,39 @@ the model and then renders it through the view.
 >rails g controller Posts index << name is always plural
 ~ What's really happening with index here? When rails generates a controller with
 an action, it creates for us a view file, a route, and will write the action
-inside of the controller for us.
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+inside of the controller for us. without even checking you can go to
+localhost:3000/posts/index.
+* Eye on the prize; we want our CRUD functionality *
+Create: let's grant us the ability to Create posts!
+>touch app/views/posts/new.html.erb
+Now when we visit the extension /posts/new we don't get an error; that's a start!
+But how will we get /new.html.erb to actually generate new posts?
+FORMS!
+we want to write a page that interacts with our Posts controller action and
+THEN save into our model! Here we see our first instance of Embedded RuBy, where
+we have ruby tags as well as html tags working to provide a dynamic view.
+form_for: is a rails helper for showing forms in the view and saving the data
+passed in INTO the database.
+@post: refers to our Post model (we still have to tweak our NEW action in order
+for it to work) allowing us to save to our model.
+f.label/f.text_field: (refer to migration folder) takes the data passed in and
+saves them to their assigned columns.
+What happens when we run it? Error!
+>>'First argument in form cannot contain nil or be empty'
+time to swing back by our controller action!
+> def new
+>   @post = Post.new
+> end
+@post is an instance variable; this enables us to utilize the Post.new operation
+within a view.
+problem: our erb is pulling from a defined instance variable, but we get an
+'unknown action' error. we made the index action, and the new action; now we
+have to make the create action.
+>def create
+>end
+done, right? far from it. how are we going to make a create action if our
+new method is already defined with Post.new?
+POST   = Create
+GET   = Read
+PATCH  = Update
+DELETE = Destroy
